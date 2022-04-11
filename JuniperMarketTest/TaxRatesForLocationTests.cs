@@ -261,7 +261,7 @@ namespace JuniperMarketTest
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSingleton<ITaxService, TaxService>();
-            serviceCollection.AddSingleton<ITaxCalculatorService, TaxCalculatorService>();
+            serviceCollection.AddSingleton<ITaxCalculatorService, TaxJarCalculatorService>();
 
             m_serviceProvider = serviceCollection.BuildServiceProvider();
         }

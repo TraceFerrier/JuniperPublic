@@ -89,7 +89,7 @@ namespace JuniperMarketTest
             serviceCollection.AddSingleton<INavigationService, MockNavigationService>();
             serviceCollection.AddSingleton<IShoppingService, MockShoppingService>();
             serviceCollection.AddSingleton<ITaxService, TaxService>();
-            serviceCollection.AddSingleton<ITaxCalculatorService, TaxCalculatorService>();
+            serviceCollection.AddSingleton<ITaxCalculatorService, TaxJarCalculatorService>();
 
             serviceCollection.AddTransient<ShopPageViewModel>();
             serviceCollection.AddSingleton<ProductDetailViewModel>();

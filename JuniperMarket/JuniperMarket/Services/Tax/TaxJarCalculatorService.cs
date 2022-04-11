@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace JuniperMarket.Services.Tax
 {
-    public class TaxCalculatorService : ITaxCalculatorService
+    public class TaxJarCalculatorService : ITaxCalculatorService
     {
-        public TaxCalculatorService()
+        public TaxJarCalculatorService()
         {
             var settings = new RefitSettings();
             settings.AuthorizationHeaderValueGetter = GetApiKey;

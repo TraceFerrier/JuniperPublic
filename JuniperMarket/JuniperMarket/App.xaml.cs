@@ -7,7 +7,6 @@ using JuniperMarket.ViewModels.Profile;
 using JuniperMarket.ViewModels.Shop;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace JuniperMarket
@@ -34,7 +33,11 @@ namespace JuniperMarket
             serviceCollection.AddSingleton<INavigationService, NavigationService>();
             serviceCollection.AddSingleton<IShoppingService, MockShoppingService>();
             serviceCollection.AddSingleton<ITaxService, TaxService>();
-            serviceCollection.AddSingleton<ITaxCalculatorService, TaxCalculatorService>();
+
+            // In the future, we can register additional tax calculator implementations here
+            // as needed, and the TaxService can select the most appropriate among them based
+            // on current customer, ordered product, etc.
+            serviceCollection.AddSingleton<ITaxCalculatorService, TaxJarCalculatorService>();
 
             serviceCollection.AddTransient<ShopPageViewModel>();
             serviceCollection.AddTransient<ProductDetailViewModel>();

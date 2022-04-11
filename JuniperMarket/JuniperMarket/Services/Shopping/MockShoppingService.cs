@@ -1,5 +1,6 @@
 ﻿using JuniperMarket.Extensions;
 using JuniperMarket.Models.Shopping;
+using JuniperMarket.Services.Tax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,28 @@ namespace JuniperMarket.Services.Shopping
         // For demo UI purposes, let's ship from/to the same state, so that taxes are always applicable.
         SupportedUSAStates m_shippingState = ShoppingFactory.GetRandomState();
 
-        public MockShoppingService()
+        public MockShoppingService(ITaxService taxService)
         {
+            m_taxService = taxService;
+
+            // Currently, we just generate a perpetual 'signed-in' user for demo purposes.
             CurrentSignedInCustomer = ShoppingFactory.GenerateCustomer(m_shippingState);
             m_injectedErrorCode = ServiceResultCode.Ok;
         }
 
-        public Customer CurrentSignedInCustomer { get; }
+        public Customer CurrentSignedInCustomer
+        {
+            get {  return m_signedInCustomer; }
+            set
+            {
+                m_signedInCustomer = value;
+                if (m_taxService != null)
+                {
+                    // Inform the tax service that the signed-in user has changed.
+                    m_taxService.OnCustomerSignIn(m_signedInCustomer);
+                }
+            }
+        }
 
         public async Task<ServiceOperationResult<Product>> GetAvailableProducts(int maxCount)
         {
@@ -180,5 +196,7 @@ namespace JuniperMarket.Services.Shopping
         private Dictionary<string, Product> m_availableProducts=new Dictionary<string, Product>();
         private Dictionary<string, List<Order>> m_orders = new Dictionary<string, List<Order>>();
         private ServiceResultCode m_injectedErrorCode;
+        private readonly ITaxService m_taxService;
+        private Customer m_signedInCustomer;
     }
 }

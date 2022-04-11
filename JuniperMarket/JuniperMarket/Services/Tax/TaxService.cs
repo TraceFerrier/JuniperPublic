@@ -1,17 +1,15 @@
 ﻿using JuniperMarket.Models.Shopping;
 using JuniperMarket.Models.Tax;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace JuniperMarket.Services.Tax
 {
     public class TaxService : ITaxService
     {
-        public TaxService(ITaxCalculatorService taxCalculatorService)
+        public TaxService(IEnumerable<ITaxCalculatorService> taxCalculatorServices)
         {
-            m_taxCalculatorService = taxCalculatorService;
+            m_taxCalculatorServices = taxCalculatorServices;
         }
 
         public async Task<ServiceOperationResult<SalesTaxForOrder>> GetSalesTaxForOrder(Customer purchasingCustomer, Product productForPurchase)
@@ -42,17 +40,36 @@ namespace JuniperMarket.Services.Tax
                 Street = productForPurchase.ShipsFromAddress.StreetAddress
             });
 
-            var result = await m_taxCalculatorService.GetSalesTaxForOrder(args);
+            var result = await GetCurrentTaxCalculatorService().GetSalesTaxForOrder(args);
             return result;
         }
 
         public async Task<ServiceOperationResult<TaxRates>> GetTaxRatesForLocation(GetTaxRatesForLocationArgs args)
         {
-            var result = await m_taxCalculatorService.GetTaxRatesForLocation(args);
+            var result = await GetCurrentTaxCalculatorService().GetTaxRatesForLocation(args);
             return result;
         }
 
-        private readonly ITaxCalculatorService m_taxCalculatorService;
+        public void OnCustomerSignIn(Customer signingInCustomer)
+        {
+
+        }
+
+        private ITaxCalculatorService GetCurrentTaxCalculatorService()
+        {
+            // For now, we just use the first registered service. In the future, we may need to use
+            // a different tax calculator service based on the location of current signed-in user,
+            // product ships-from address, etc, and we'll select the most appropriate registered
+            // service here.
+            foreach (var taxCalculatorService in m_taxCalculatorServices)
+            {
+                return taxCalculatorService;
+            }
+
+            throw new System.ArgumentNullException("No tax calculation service found!");
+        }
+
+        private readonly IEnumerable<ITaxCalculatorService> m_taxCalculatorServices;
 
     }
 }
