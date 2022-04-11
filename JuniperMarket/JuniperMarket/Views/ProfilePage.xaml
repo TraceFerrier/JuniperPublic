@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:views="clr-namespace:JuniperMarket.Views"
+                       xmlns:vm="clr-namespace:JuniperMarket.ViewModels.Profile"
+                       xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                       xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+                       BackgroundColor="{StaticResource StandardPageBackground}"
+                       Title="My Profile"
+                       x:Class="JuniperMarket.Views.ProfilePage">
+    <ContentPage.Content>
+        <Grid x:DataType="vm:ProfilePageViewModel" Margin="10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <ffimageloading:CachedImage Source="{Binding ProfileImageUrl}" Grid.Column="0" Grid.Row="0" VerticalOptions="Center" Margin="4" 
+                                                        Style="{StaticResource StandardProfileImageStyle}">
+                <ffimageloading:CachedImage.Transformations>
+                    <fftransformations:CircleTransformation/>
+                </ffimageloading:CachedImage.Transformations>
+
+            </ffimageloading:CachedImage>
+
+            <StackLayout Orientation="Vertical" VerticalOptions="Center" Grid.Column="1" Grid.Row="0">
+
+                <Label Text="{Binding FullName}" Style="{StaticResource LargerStandardLabelStyle}" LineBreakMode="WordWrap" MaxLines="2"/>
+                <Label Text="{Binding Location}" Style="{StaticResource SmallerStandardLabelStyle}" LineBreakMode="WordWrap" MaxLines="2"/>
+
+            </StackLayout>
+
+            <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Bio}" Style="{StaticResource StandardLabelStyle}" 
+                   LineBreakMode="WordWrap" />
+
+        </Grid>
+    </ContentPage.Content>
+</views:BaseContentPage>

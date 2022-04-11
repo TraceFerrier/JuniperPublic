@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage  
+    xmlns:views="clr-namespace:JuniperMarket.Views" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:JuniperMarket.ViewModels.Shop"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    Title="{Binding PageTitle}"
+    BackgroundColor="{StaticResource StandardPageBackground}"
+    x:Class="JuniperMarket.Views.ShopPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <DataTemplate x:Key="loadingTemplate">
+                <ViewCell x:DataType="vm:ShopLoadingCellViewModel">
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center" HeightRequest="160" Margin="18">
+                        <ActivityIndicator IsRunning="True" HorizontalOptions="Center" Margin="12" VerticalOptions="Center" 
+                                           Scale="{StaticResource StandardActivityIndicatorScale}"/>
+                        <Label Text="{Binding LoadingMessage}" Style="{StaticResource LargerStandardLabelStyle}" HorizontalOptions="CenterAndExpand" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="categoryTemplate">
+                <ViewCell x:DataType="vm:ShopProductCategoryCellViewModel">
+                    <Grid HorizontalOptions="FillAndExpand" Margin="0,8,0,4" BackgroundColor="White">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Text="{Binding CategoryName}" Grid.Row="0" Grid.Column="0" Margin="8,0,0,0"
+                               Style="{StaticResource PageCellHeaderStyle}" HorizontalOptions="StartAndExpand" VerticalOptions="Center"/>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            
+            <DataTemplate x:Key="productTemplate">
+                <ViewCell x:DataType="vm:ShopProductCellViewModel">
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center" Margin="5">
+                        <Frame Padding="10" BackgroundColor="White" CornerRadius="10" HasShadow="false" BorderColor="Black">
+                            <Grid >
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ffimageloading:CachedImage Source="{Binding Product.ProductImageUrl}"                                             
+                                                            Grid.Column="0" Grid.Row="0" VerticalOptions="Center" Margin="8" 
+                                                            Style="{StaticResource ProductListImageStyle}">
+
+                                </ffimageloading:CachedImage>
+
+                                <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="0" VerticalOptions="Center">
+                                    <Label Text="{Binding Product.Name}"
+                                           Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start"/>
+
+                                    <Label Text="{Binding Product.Description}" Style="{StaticResource StandardLabelStyle}" FontSize="14"
+                                           HorizontalOptions="Start" />
+
+                                    <Label Text="{Binding FormattedPrice}" Grid.Column="0" Grid.Row="0"
+                                           Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start"/>
+                                </StackLayout>
+
+
+                            </Grid>
+
+                        </Frame>
+
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ProductTapCommand}"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="emptyExperienceTemplate">
+                <ViewCell x:DataType="vm:ShopEmptyExperienceCellViewModel">
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center" Margin="18">
+                        <Label Text="{Binding MainMessage}" Style="{StaticResource LargerStandardLabelStyle}" HorizontalOptions="CenterAndExpand" />
+                        <Label Text="{Binding SecondaryMessage}" Style="{StaticResource SmallerStandardLabelStyle}" HorizontalOptions="CenterAndExpand" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="errorExperienceTemplate">
+                <ViewCell x:DataType="vm:ShopErrorExperienceCellViewModel">
+                    <StackLayout Orientation="Vertical" VerticalOptions="Center" Margin="18">
+                        <Label Text="{Binding MainMessage}" Style="{StaticResource LargerErrorLabelStyle}" HorizontalOptions="CenterAndExpand" />
+                        <Label Text="{Binding SecondaryMessage}" Style="{StaticResource SmallerErrorLabelStyle}" HorizontalOptions="CenterAndExpand" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+            
+            <vm:ShopPageTemplateSelector x:Key="pageTemplateSelector"
+                                         LoadingTemplate="{StaticResource loadingTemplate}"
+                                         ProductCategoryTemplate="{StaticResource categoryTemplate}"
+                                         ProductTemplate="{StaticResource productTemplate}"
+                                         EmptyExperienceTemplate="{StaticResource emptyExperienceTemplate}"
+                                         ErrorExperienceTemplate="{StaticResource errorExperienceTemplate}"
+                                         />
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <Grid x:DataType="vm:ShopPageViewModel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView ItemsSource="{Binding ShoppingListViewModels}"
+                      ItemTemplate="{StaticResource pageTemplateSelector}"
+                      Grid.Row="0"
+                      Grid.Column="0"
+                      BackgroundColor="{StaticResource StandardPageBackground}"
+                      VerticalOptions="FillAndExpand"
+                      HorizontalOptions="FillAndExpand"
+                      HasUnevenRows="True"
+                      SelectionMode="None"
+                      IsPullToRefreshEnabled="True"
+                      RefreshCommand="{Binding RefreshPageCommand}"
+                      IsRefreshing="{Binding IsPageRefreshing}"
+                      SeparatorVisibility="None"
+                      CachingStrategy="RecycleElement">
+            </ListView>
+
+        </Grid>
+    </ContentPage.Content>
+</views:BaseContentPage>

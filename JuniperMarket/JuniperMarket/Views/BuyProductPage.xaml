@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage  xmlns:views="clr-namespace:JuniperMarket.Views"
+                        xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:vm="clr-namespace:JuniperMarket.ViewModels.Shop"
+                        BackgroundColor="{StaticResource NavigationOrangeLight}"
+                        x:Class="JuniperMarket.Views.BuyProductPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ActionButtonStyle" TargetType="Button">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="BorderColor" Value="{StaticResource IconGray}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="6" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" x:DataType="vm:ProductDetailViewModel" VerticalOptions="Center" Margin="10">
+            <Grid Grid.Row="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ProductName}" Style="{StaticResource LargerStandardLabelStyle}" HorizontalOptions="Start"/>
+                
+                <Label Grid.Row="1" Grid.Column="0" Text="Price" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start"/>
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding FormattedPrice}" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="End"/>
+
+                <Label Grid.Row="2" Grid.Column="0" Text="Taxes" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start" IsVisible="{Binding IsTaxCalculated}"/>
+                <Label Grid.Row="2" Grid.Column="1" Text="{Binding FormattedTaxesCost}" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="End" IsVisible="{Binding IsTaxCalculated}"/>
+
+                <Label Grid.Row="3" Grid.Column="0" Text="Shipping" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start" IsVisible="{Binding IsTaxCalculated}"/>
+                <Label Grid.Row="3" Grid.Column="1" Text="{Binding FormattedShippingCost}" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="End" IsVisible="{Binding IsTaxCalculated}"/>
+
+                <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="LightGray" HeightRequest="1" Margin="0" VerticalOptions="Center" IsVisible="{Binding IsTaxCalculated}"/>
+
+                <Label Grid.Row="5" Grid.Column="0" Text="Grand Total" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start" IsVisible="{Binding IsTaxCalculated}"/>
+                <Label Grid.Row="5" Grid.Column="1" Text="{Binding FormattedGrandTotal}" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="End" IsVisible="{Binding IsTaxCalculated}"/>
+
+            </Grid>
+
+            <Label Text="Ready to buy this product?" Style="{StaticResource LargerStandardLabelStyle}" HorizontalOptions="Center"/>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="0,12,0,8">
+                <Button Text="CANCEL" Margin="8" Style="{StaticResource ActionButtonStyle}" WidthRequest="90" Command="{Binding CancelBuyCommand}"/>
+                <Button Text="OK" Margin="8" Style="{StaticResource ActionButtonStyle}" WidthRequest="90" Command="{Binding ConfirmBuyCommand}"/>
+            </StackLayout>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</views:BaseContentPage>

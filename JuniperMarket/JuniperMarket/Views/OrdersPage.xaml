@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             BackgroundColor="{StaticResource StandardPageBackground}"
+             Title="Orders Page"
+             x:Class="JuniperMarket.Views.OrdersPage">
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical" VerticalOptions="Center" Margin="18">
+            <Label Text="Welcome to the Orders page!" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Center"/>
+            <Label Text="In the future, we'll show you everything you've ordered, right here!" 
+                   Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

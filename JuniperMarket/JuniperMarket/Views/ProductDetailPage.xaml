@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:BaseContentPage
+    xmlns:views="clr-namespace:JuniperMarket.Views"
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:JuniperMarket.ViewModels.Shop"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    Title="{Binding PageTitle}"
+    x:Class="JuniperMarket.Views.ProductDetailPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ActionButtonStyle" TargetType="Button">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="BorderColor" Value="{StaticResource IconGray}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="6" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <Grid x:DataType="vm:ProductDetailViewModel">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <StackLayout Grid.Row="0" IsVisible="{Binding IsLoading}" Orientation="Vertical" VerticalOptions="Center" HeightRequest="160" Margin="18">
+                <ActivityIndicator IsRunning="True" HorizontalOptions="Center" Margin="12" VerticalOptions="Center" 
+                                           Scale="{StaticResource StandardActivityIndicatorScale}"/>
+                <Label Text="{Binding LoadingMessage}" Style="{StaticResource LargerStandardLabelStyle}" HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" IsVisible="{Binding IsLoaded}" Orientation="Vertical" VerticalOptions="Center" Margin="0">
+                <Grid >
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ffimageloading:CachedImage Grid.Column="0" Grid.Row="0" Source="{Binding ProductImageUrl}" 
+                                                    Aspect="AspectFill" Style="{StaticResource ProductDetailsImageStyle}"/>
+
+                    <StackLayout Orientation="Vertical" Grid.Column="0" Grid.Row="1" VerticalOptions="Center" Margin="8,0,8,9">
+                        <Label Text="{Binding ProductName}" Style="{StaticResource LargerStandardLabelStyle}" HorizontalOptions="Start"/>
+                        <Label Text="{Binding ProductDescription}" Style="{StaticResource SmallerStandardLabelStyle}" HorizontalOptions="Start" />
+                    </StackLayout>
+
+                    <Grid Grid.Column="0" Grid.Row="2" Margin="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Text="Price" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start"/>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding FormattedPrice}" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="End"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Taxes" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start" IsVisible="{Binding IsTaxCalculated}"/>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding FormattedTaxesCost}" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="End" IsVisible="{Binding IsTaxCalculated}"/>
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="Shipping" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start" IsVisible="{Binding IsTaxCalculated}"/>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding FormattedShippingCost}" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="End" IsVisible="{Binding IsTaxCalculated}"/>
+
+                            <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="LightGray" HeightRequest="1" Margin="0" VerticalOptions="Center" IsVisible="{Binding IsTaxCalculated}"/>
+
+                            <Label Grid.Row="4" Grid.Column="0" Text="Grand Total" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="Start" IsVisible="{Binding IsTaxCalculated}"/>
+                            <Label Grid.Row="4" Grid.Column="1" Text="{Binding FormattedGrandTotal}" Style="{StaticResource StandardLabelStyle}" HorizontalOptions="End" IsVisible="{Binding IsTaxCalculated}"/>
+
+                        </Grid>
+
+                        <Button Grid.Row="1" Text="Calculate Taxes/Shipping" Style="{StaticResource ActionButtonStyle}" IsVisible="{Binding IsAvailableToBuy}"
+                                Command="{Binding CalculateCommand}" BackgroundColor="{StaticResource Gold}" />
+                        
+                        <Button Grid.Row="2" Text="Buy Now" Style="{StaticResource ActionButtonStyle}" IsVisible="{Binding IsAvailableToBuy}"
+                                Command="{Binding BuyNowCommand}" BackgroundColor="{StaticResource NavigationOrange}"/>
+
+                        <Label Grid.Row="3" Text="{Binding HasBeenOrderedMessage}" Style="{StaticResource SmallerStandardLabelStyle}" 
+                               HorizontalOptions="Center" IsVisible="{Binding HasBeenOrdered}"/>
+
+                        <Label Grid.Row="4" Text="{Binding StatusMessage}" Style="{StaticResource SmallerStandardLabelStyle}" TextColor="Red"
+                               HorizontalOptions="Center" IsVisible="{Binding ShouldShowStatusMessage}"/>
+                        
+                        <ActivityIndicator Grid.Row="5" IsRunning="True" HorizontalOptions="Center" Margin="0" VerticalOptions="Center" 
+                                           IsVisible="{Binding IsActivityRunning}" Scale="{StaticResource SmallActivityIndicatorScale}"/>
+                    </Grid>
+
+                </Grid>
+
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</views:BaseContentPage>

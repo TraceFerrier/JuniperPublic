@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="JuniperMarket.App">
+    <!--
+        Define global resources and styles here, that apply to all pages in your app.
+    -->
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="AppGreen">#109F4D</Color>
+            <Color x:Key="LinkBlue">#51A4F5</Color>
+            <Color x:Key="IconGray">#c4c4c4</Color>
+            <Color x:Key="MustardYellow">#bca014</Color>
+            <Color x:Key="Gold">#ffd700</Color>
+            <Color x:Key="NavigationOrange">#ffa500</Color>
+            <Color x:Key="NavigationOrangeLight">#ffc04d</Color>
+            <Color x:Key="StandardPageBackground">#f5f5dc</Color>
+
+
+            <Style TargetType="Button">
+                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#332196F3" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+            <OnPlatform
+                x:Key="StandardActivityIndicatorScale"
+                x:TypeArguments="x:Double"
+                Android="1.0"
+                iOS="2.0" />
+
+            <OnPlatform
+                x:Key="SmallActivityIndicatorScale"
+                x:TypeArguments="x:Double"
+                Android="0.5"
+                iOS="1.0" />
+            
+            <Style x:Key="StandardLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="17"/>
+                <Setter Property="FontAttributes" Value="None"/>
+            </Style>
+
+            <Style x:Key="LargerStandardLabelStyle" TargetType="Label" BasedOn="{StaticResource StandardLabelStyle}">
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+
+            <Style x:Key="SmallerStandardLabelStyle" TargetType="Label" BasedOn="{StaticResource StandardLabelStyle}">
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <Style x:Key="LargerErrorLabelStyle" TargetType="Label" BasedOn="{StaticResource StandardLabelStyle}">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="TextColor" Value="DarkRed"/>
+            </Style>
+
+            <Style x:Key="SmallerErrorLabelStyle" TargetType="Label" BasedOn="{StaticResource StandardLabelStyle}">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="TextColor" Value="DarkRed"/>
+            </Style>
+            
+            <Style x:Key="PageCellHeaderStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource AppGreen}" />
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+            </Style>
+
+            <Style x:Key="BaseImageStyle" TargetType="ffimageloading:CachedImage">
+                <Setter Property="DownsampleToViewSize" Value="True"/>
+                <Setter Property="LoadingPlaceholder" Value="lightgray.png"/>
+            </Style>
+            
+            <Style x:Key="ProductListImageStyle" TargetType="ffimageloading:CachedImage" BasedOn="{StaticResource BaseImageStyle}">
+                <Setter Property="HeightRequest" Value="75"/>
+                <Setter Property="WidthRequest" Value="75"/>
+            </Style>
+
+            <Style x:Key="ProductDetailsImageStyle" TargetType="ffimageloading:CachedImage" BasedOn="{StaticResource ProductListImageStyle}">
+                <Setter Property="HeightRequest" Value="200"/>
+            </Style>
+
+            <Style x:Key="StandardProfileImageStyle" TargetType="ffimageloading:CachedImage" BasedOn="{StaticResource BaseImageStyle}">
+                <Setter Property="HeightRequest" Value="90"/>
+                <Setter Property="WidthRequest" Value="90"/>
+            </Style>
+
+            <Style x:Key="StandardActionButton" TargetType="Button">
+                <Setter Property="TextColor" Value="{StaticResource LinkBlue}" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="HeightRequest" Value="32"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="BorderColor" Value="{StaticResource IconGray}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="16" />
+            </Style>
+
+        </ResourceDictionary>        
+    </Application.Resources>
+</Application>
